@@ -158,10 +158,16 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_settings) {
-            viewModel.settings.value = CalculatorDataViewModel.UnitSettings(mode.toString(), to_units.text.toString(), from_units.text.toString())
+            viewModel.settings.value =
+                CalculatorDataViewModel.UnitSettings(mode.toString(),
+                    to_units.text.toString(), from_units.text.toString())
             findNavController().navigate(R.id.action_main2settings)
+            return true
+        } else if (item.itemId == R.id.action_history) {
+            findNavController().navigate(R.id.action_main2history)
             return true
         }
         return false
+
     }
 }
