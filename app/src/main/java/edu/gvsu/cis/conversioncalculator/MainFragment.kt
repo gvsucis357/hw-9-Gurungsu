@@ -131,6 +131,10 @@ class MainFragment : Fragment() {
                     val dVal = `val`.toDouble()
                     val cVal: Double = UnitsConverter.convert(dVal, fUnits, tUnits)
                     dest.setText(java.lang.Double.toString(cVal))
+                    val item = HistoryContent.HistoryItem(dVal, cVal, mode.toString(),
+                            to_units.getText().toString(), from_units.getText().toString(),
+                            DateTime.now())
+                    addItem(item)
                 }
                 MainFragment.Mode.Volume -> {
                     val vtUnits: UnitsConverter.VolumeUnits
