@@ -9,14 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import edu.gvsu.cis.conversioncalculator.dummy.HistoryContent
+import edu.gvsu.cis.conversioncalculator.dummy.HistoryContent.addItem
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.joda.time.DateTime
 
 /**
  * A simple [Fragment] subclass.
  * Use the [MainFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainFragment : Fragment() {
+class MainFragment(val dVal: Double, val cVal: Double) : Fragment() {
 
     lateinit var viewModel: CalculatorDataViewModel
 
@@ -101,13 +104,24 @@ class MainFragment : Fragment() {
         if (fromVal.intern() !== "") {
             `val` = fromVal
             dest = to_field
+
         }
+
         val toVal: String = to_field.getText().toString()
         if (toVal.intern() !== "") {
             `val` = toVal
             dest = from_field
         }
+
+        val item = HistoryContent.HistoryItem(
+            dVal, cVal, mode.toString(),
+            to_units.getText().toString(), from_units.getText().toString(),
+            DateTime.now()
+        )
+        addItem(item)
+
         if (dest != null) {
+
             when (mode) {
                 MainFragment.Mode.Length -> {
                     val tUnits: UnitsConverter.LengthUnits

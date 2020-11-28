@@ -13,8 +13,9 @@ import edu.gvsu.cis.conversioncalculator.dummy.HistoryContent.HistoryItem
  * TODO: Replace the implementation with code for your data type.
  */
 class MyItemRecyclerViewAdapter(
-    private val values: List<HistoryItem>
-) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+    private val values: List<HistoryItem>,
+    val listener: ((HistoryItem) -> Unit)? = null)
+    : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,19 +24,32 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.bindTo(values[position], listener)
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.item_number)
-        val contentView: TextView = view.findViewById(R.id.content)
-
+    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView)
+    {
+        val mP1: TextView
+        val mDateTime: TextView
+        var mItem: HistoryItem? = null
+        val parentView:View
         override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+            return super.toString() + " '" + mDateTime.text + "'"
         }
-    }
-}
+        init {
+            mP1 = mView.findViewById<View>(R.id.p1) as TextView
+            mDateTime = mView.findViewById<View>(R.id.timestamp) as TextView
+            parentView = mView
+        }
+        public fun bindTo(d: HistoryItem, listener: ((HistoryItem) -> Unit)?) {
+            mItem = d
+            mP1.text = d.toString()
+            mDateTime.text = d.timestamp.toString()
+            if (listener != null) {
+                parentView.setOnClickListener {
+                    listener(d)
+                }
+            }
+        }}}
