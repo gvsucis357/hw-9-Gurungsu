@@ -19,7 +19,7 @@ import org.joda.time.DateTime
  * Use the [MainFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainFragment(val dVal: Double, val cVal: Double) : Fragment() {
+class MainFragment : Fragment() {
 
     lateinit var viewModel: CalculatorDataViewModel
 
@@ -113,12 +113,7 @@ class MainFragment(val dVal: Double, val cVal: Double) : Fragment() {
             dest = from_field
         }
 
-        val item = HistoryContent.HistoryItem(
-            dVal, cVal, mode.toString(),
-            to_units.getText().toString(), from_units.getText().toString(),
-            DateTime.now()
-        )
-        addItem(item)
+
 
         if (dest != null) {
 

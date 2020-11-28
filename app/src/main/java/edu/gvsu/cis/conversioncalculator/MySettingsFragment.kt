@@ -1,5 +1,7 @@
 package edu.gvsu.cis.conversioncalculator
 
+import android.icu.text.Normalizer2
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_my_settings.*
 import kotlinx.android.synthetic.main.content_my_settings.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import java.util.ArrayList
 
 /**
@@ -35,7 +40,17 @@ class MySettingsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my_settings, container, false);
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        viewModel.selected.observe(this.viewLifecycleOwner, Observer { z ->
+            from_field.setText(z.fromVal.toString())
+            from_units.text = z.fromUnits
+            to_field.setText(z.toVal.toString())
+            to_units.text = z.toUnits
+            Normalizer2.Mode.valueOf(z.mode).also { this.mode = it.toString() }
+            calculator_title.text = "$mode Converter"
+        })
+
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(CalculatorDataViewModel::class.java)
         viewModel.settings.observe(this.viewLifecycleOwner, Observer { z ->
