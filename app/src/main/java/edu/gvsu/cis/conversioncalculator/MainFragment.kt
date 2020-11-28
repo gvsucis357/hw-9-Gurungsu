@@ -35,7 +35,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -100,14 +100,14 @@ class MainFragment : Fragment() {
     private fun doConversion() {
         var dest: EditText? = null
         var `val` = ""
-        val fromVal: String = from_field.getText().toString()
+        val fromVal: String = from_field.text.toString()
         if (fromVal.intern() !== "") {
             `val` = fromVal
             dest = to_field
 
         }
 
-        val toVal: String = to_field.getText().toString()
+        val toVal: String = to_field.text.toString()
         if (toVal.intern() !== "") {
             `val` = toVal
             dest = from_field
@@ -122,17 +122,17 @@ class MainFragment : Fragment() {
                     val tUnits: UnitsConverter.LengthUnits
                     val fUnits: UnitsConverter.LengthUnits
                     if (dest === to_field) {
-                        fUnits = UnitsConverter.LengthUnits.valueOf(from_units.getText().toString())
-                        tUnits = UnitsConverter.LengthUnits.valueOf(to_units.getText().toString())
+                        fUnits = UnitsConverter.LengthUnits.valueOf(from_units.text.toString())
+                        tUnits = UnitsConverter.LengthUnits.valueOf(to_units.text.toString())
                     } else {
-                        fUnits = UnitsConverter.LengthUnits.valueOf(to_units.getText().toString())
-                        tUnits = UnitsConverter.LengthUnits.valueOf(from_units.getText().toString())
+                        fUnits = UnitsConverter.LengthUnits.valueOf(to_units.text.toString())
+                        tUnits = UnitsConverter.LengthUnits.valueOf(from_units.text.toString())
                     }
                     val dVal = `val`.toDouble()
                     val cVal: Double = UnitsConverter.convert(dVal, fUnits, tUnits)
                     dest.setText(java.lang.Double.toString(cVal))
                     val item = HistoryContent.HistoryItem(dVal, cVal, mode.toString(),
-                            to_units.getText().toString(), from_units.getText().toString(),
+                            to_units.text.toString(), from_units.text.toString(),
                             DateTime.now())
                     addItem(item)
                 }
@@ -140,15 +140,24 @@ class MainFragment : Fragment() {
                     val vtUnits: UnitsConverter.VolumeUnits
                     val vfUnits: UnitsConverter.VolumeUnits
                     if (dest === to_field) {
-                        vfUnits = UnitsConverter.VolumeUnits.valueOf(from_units.getText().toString())
-                        vtUnits = UnitsConverter.VolumeUnits.valueOf(to_units.getText().toString())
+                        vfUnits = UnitsConverter.VolumeUnits.valueOf(from_units.text.toString())
+                        vtUnits = UnitsConverter.VolumeUnits.valueOf(to_units.text.toString())
                     } else {
-                        vfUnits = UnitsConverter.VolumeUnits.valueOf(to_units.getText().toString())
-                        vtUnits = UnitsConverter.VolumeUnits.valueOf(from_units.getText().toString())
+                        vfUnits = UnitsConverter.VolumeUnits.valueOf(to_units.text.toString())
+                        vtUnits = UnitsConverter.VolumeUnits.valueOf(from_units.text.toString())
                     }
                     val vdVal = `val`.toDouble()
                     val vcVal: Double = UnitsConverter.convert(vdVal, vfUnits, vtUnits)
                     dest.setText(java.lang.Double.toString(vcVal))
+                    val item = HistoryContent.HistoryItem(
+                            vdVal,
+                            vcVal,
+                            mode.toString(),
+                            to_units.text.toString(),
+                            from_units.text.toString(),
+                            DateTime.now()
+                    )
+                    HistoryContent.addItem(item)
                 }
             }
         }
